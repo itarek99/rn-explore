@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Image,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, Linking, Pressable, StyleSheet, Text, View} from 'react-native';
 
 export default function ImageCard() {
   const handleBuy = () => {
@@ -36,11 +29,11 @@ export default function ImageCard() {
               <Text style={styles.cardPriceValue}>$9999.49</Text>
             </View>
             <View>
-              <TouchableOpacity style={styles.buyBtn}>
+              <Pressable style={styles.buyBtn}>
                 <Text onPress={handleBuy} style={styles.buyBtnText}>
                   Buy Now
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
         </View>
