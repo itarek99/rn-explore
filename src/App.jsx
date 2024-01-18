@@ -34,9 +34,7 @@ const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        <View style={styles.diceContainer}>
-          <Image style={styles.dice} source={data[dice]} />
-        </View>
+        <Image style={styles.dice} source={data[dice]} />
         <Pressable
           style={styles.rollButton}
           onPress={() => {
@@ -57,7 +55,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
   },
-
   rollButton: {
     backgroundColor: '#000',
     paddingVertical: 16,
