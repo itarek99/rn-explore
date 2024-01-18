@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {
   FlatList,
+  KeyboardAvoidingView,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -46,32 +47,35 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>TAKA</Text>
-          <TextInput
-            keyboardType="decimal-pad"
-            style={styles.input}
-            onChangeText={handleInputChange}
-            value={String(inputCurrency)}
-          />
-        </View>
+      <KeyboardAvoidingView behavior="height">
+        <View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>TAKA</Text>
+            <TextInput
+              keyboardType="decimal-pad"
+              style={styles.input}
+              onChangeText={handleInputChange}
+              value={String(inputCurrency)}
+            />
+          </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>{selectedCurrency.name}</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={handleOutputChange}
-            value={String(convertedCurrency)}
-          />
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>{selectedCurrency.name}</Text>
+            <TextInput
+              keyboardType="decimal-pad"
+              style={styles.input}
+              onChangeText={handleOutputChange}
+              value={String(convertedCurrency)}
+            />
+          </View>
         </View>
-      </View>
-      <FlatList
-        data={currencyByTaka}
-        renderItem={renderItem}
-        keyExtractor={item => item.name}
-        contentContainerStyle={styles.contentContainerStyle}
-      />
+        <FlatList
+          data={currencyByTaka}
+          renderItem={renderItem}
+          keyExtractor={item => item.name}
+          contentContainerStyle={styles.contentContainerStyle}
+        />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
