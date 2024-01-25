@@ -1,32 +1,14 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import About from './screens/Details/Details';
-import Home from './screens/Home/Home';
-
-const Stack = createNativeStackNavigator();
+import {StyleSheet, Text, View} from 'react-native';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            title: 'Product List',
-          }}
-        />
-        <Stack.Screen
-          name="Details"
-          component={About}
-          options={{
-            title: 'Product Details',
-            headerBackTitle: 'Back',
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <View>
+      <Text>App</Text>
+    </View>
   );
 };
+
 export default App;
+
+const styles = StyleSheet.create({});
