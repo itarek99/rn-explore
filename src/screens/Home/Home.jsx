@@ -27,7 +27,7 @@ const Home = ({navigation}) => {
         <Text style={styles.userName}>Hello, John Doe</Text>
         <Pressable
           onPress={() => {
-            navigation.goBack();
+            navigation.openDrawer();
           }}>
           <Image
             style={styles.profileImage}

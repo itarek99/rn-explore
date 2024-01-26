@@ -4,7 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CoverImage from '../../assets/svgs/cover.svg';
 import {DARK_COLOR, PRIMARY_COLOR} from '../../constants/colors';
 
-const Main = ({navigation}) => {
+const Onboarding = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>GAMER ZONE</Text>
@@ -13,7 +13,7 @@ const Main = ({navigation}) => {
       </View>
       <Pressable
         onPress={() => {
-          navigation.navigate('Home');
+          navigation.navigate('Login');
         }}
         style={styles.button}>
         <Text style={styles.buttonText}>Let's Begin</Text>
@@ -23,7 +23,7 @@ const Main = ({navigation}) => {
   );
 };
 
-export default Main;
+export default Onboarding;
 
 const styles = StyleSheet.create({
   container: {

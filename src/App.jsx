@@ -1,31 +1,14 @@
 import '../ignoreWarnings';
 
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import Home from './screens/Home/Home';
-import Main from './screens/Main/Main';
+import AppStack from './navigation/AppStack';
 
-const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Main"
-          component={Main}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
+      <AppStack />
+      {/* <AuthStack /> */}
     </NavigationContainer>
   );
 };

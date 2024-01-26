@@ -1,8 +1,10 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {PRIMARY_COLOR} from '../../../constants/colors';
 
 const GameListItem = ({data}) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.details}>
@@ -14,7 +16,11 @@ const GameListItem = ({data}) => {
           <Text style={styles.subtitle}>{data.subtitle}</Text>
         </View>
       </View>
-      <Pressable style={styles.button}>
+      <Pressable
+        onPress={() => {
+          navigation.navigate('Details', {data});
+        }}
+        style={styles.button}>
         <Text style={styles.buttonText}>
           {data.isFree === 'Yes' ? 'Play' : data.price}
         </Text>
