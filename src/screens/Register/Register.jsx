@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {
   Pressable,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -25,60 +26,64 @@ const Register = ({navigation}) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.loginImage}>
-        <LoginImage width="90%" height={300} />
-      </View>
-      <View style={styles.loginFormContainer}>
-        <View style={styles.formControl}>
-          <FontAwesome name="user" size={22} color={DARK_COLOR} />
-          <TextInput style={styles.textInput} placeholder="Full Name" />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollViewContainer}>
+        <View style={styles.loginImage}>
+          <LoginImage width="90%" height={300} />
         </View>
-        <View style={styles.formControl}>
-          <FontAwesome name="envelope" size={18} color={DARK_COLOR} />
-          <TextInput style={styles.textInput} placeholder="Email" />
-        </View>
-        <View style={styles.formControl}>
-          <FontAwesome name="lock" size={24} color={DARK_COLOR} />
-          <TextInput style={styles.textInput} placeholder="Password" />
-        </View>
-        <View style={styles.formControl}>
-          <FontAwesome name="calendar" size={18} color={DARK_COLOR} />
-          <TextInput
-            value={date.toDateString()}
-            onFocus={() => {
-              setOpen(true);
-            }}
-            style={styles.textInput}
-            placeholder="Password"
-          />
+        <View style={styles.loginFormContainer}>
+          <View style={styles.formControl}>
+            <FontAwesome name="user" size={22} color={DARK_COLOR} />
+            <TextInput style={styles.textInput} placeholder="Full Name" />
+          </View>
+          <View style={styles.formControl}>
+            <FontAwesome name="envelope" size={18} color={DARK_COLOR} />
+            <TextInput style={styles.textInput} placeholder="Email" />
+          </View>
+          <View style={styles.formControl}>
+            <FontAwesome name="lock" size={24} color={DARK_COLOR} />
+            <TextInput style={styles.textInput} placeholder="Password" />
+          </View>
+          <View style={styles.formControl}>
+            <FontAwesome name="calendar" size={18} color={DARK_COLOR} />
+            <TextInput
+              value={date.toDateString()}
+              onFocus={() => {
+                setOpen(true);
+              }}
+              style={styles.textInput}
+              placeholder="Password"
+            />
 
-          <DatePicker
-            mode="date"
-            modal
-            open={open}
-            date={date}
-            onConfirm={selected => {
-              setOpen(false);
-              setDate(selected);
-            }}
-            onCancel={() => {
-              setOpen(false);
-            }}
-            maximumDate={new Date()}
-            minimumDate={new Date(1990, 1, 1)}
-          />
-        </View>
-        <Pressable onPress={handleRegister} style={styles.button}>
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
-
-        <View style={styles.noAccContainer}>
-          <Text>Already have an account? </Text>
-          <Pressable onPress={handleNavigateToRegister}>
-            <Text style={styles.registerBtnText}>Login</Text>
+            <DatePicker
+              mode="date"
+              modal
+              open={open}
+              date={date}
+              onConfirm={selected => {
+                setOpen(false);
+                setDate(selected);
+              }}
+              onCancel={() => {
+                setOpen(false);
+              }}
+              maximumDate={new Date()}
+              minimumDate={new Date(1990, 1, 1)}
+            />
+          </View>
+          <Pressable onPress={handleRegister} style={styles.button}>
+            <Text style={styles.buttonText}>Login</Text>
           </Pressable>
+
+          <View style={styles.noAccContainer}>
+            <Text>Already have an account? </Text>
+            <Pressable onPress={handleNavigateToRegister}>
+              <Text style={styles.registerBtnText}>Login</Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -89,8 +94,10 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+
+  scrollViewContainer: {
+    width: '100%',
   },
 
   title: {
@@ -154,6 +161,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 30,
+    marginBottom: 20,
   },
 
   registerBtnText: {

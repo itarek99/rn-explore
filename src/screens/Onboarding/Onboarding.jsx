@@ -9,7 +9,7 @@ const Onboarding = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>GAMER ZONE</Text>
       <View style={styles.coverImage}>
-        <CoverImage width="100%" />
+        <CoverImage height="100%" width="100%" />
       </View>
       <Pressable
         onPress={() => {
@@ -27,6 +27,7 @@ export default Onboarding;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 16,
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
 
   coverImage: {
     width: '100%',
+    height: 300,
     paddingHorizontal: 16,
   },
 
