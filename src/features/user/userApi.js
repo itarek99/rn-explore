@@ -22,7 +22,18 @@ const userApi = apiSlice.injectEndpoints({
         },
       }),
     }),
+    registerUser: builder.mutation({
+      query: body => ({
+        url: 'wp-json/app/v1/users',
+        method: 'POST',
+        body,
+      }),
+    }),
   }),
 });
 
-export const {useGetTokenMutation, useGetUserInfoMutation} = userApi;
+export const {
+  useGetTokenMutation,
+  useGetUserInfoMutation,
+  useRegisterUserMutation,
+} = userApi;

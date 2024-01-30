@@ -1,4 +1,5 @@
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useState} from 'react';
 import {
   Pressable,
   SafeAreaView,
@@ -9,12 +10,45 @@ import {
   View,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {useDispatch} from 'react-redux';
 import Cover from '../../assets/svg/register.svg';
 import {DARK_COLOR, PRIMARY_COLOR} from '../../constants/colors';
+import {useRegisterUserMutation} from '../../features/user/userApi';
+import {setUser} from '../../features/user/userSlice';
 
 const Register = ({navigation}) => {
-  const handleRegister = () => {
-    navigation.navigate('Home');
+  const dispatch = useDispatch();
+  const [registerUser, {}] = useRegisterUserMutation();
+  const [newUserInfo, setNewUserInfo] = useState({
+    user_login: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    password: '',
+  });
+
+  const handleChangeText = (name, value) => {
+    setNewUserInfo({...newUserInfo, [name]: value});
+  };
+
+  const handleRegister = async () => {
+    console.log(newUserInfo);
+    return;
+    try {
+      const result = await registerUser(newUserInfo).unwrap();
+      if (result.success) {
+        await AsyncStorage.setItem('userInfo', JSON.stringify(result.user));
+        await AsyncStorage.setItem('token', JSON.stringify(result.jwt));
+        dispatch(
+          setUser({
+            token: result.jwt,
+            userInfo: result.user,
+          }),
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleNavigateToRegister = () => {
@@ -31,15 +65,49 @@ const Register = ({navigation}) => {
         <View style={styles.loginFormContainer}>
           <View style={styles.formControl}>
             <FontAwesome name="user" size={22} color={DARK_COLOR} />
-            <TextInput style={styles.textInput} placeholder="Full Name" />
+            <TextInput
+              value={newUserInfo.user_login}
+              onChangeText={text => handleChangeText('user_login', text)}
+              style={styles.textInput}
+              placeholder="Username"
+            />
+          </View>
+          <View style={styles.formControl}>
+            <FontAwesome name="user" size={22} color={DARK_COLOR} />
+            <TextInput
+              value={newUserInfo.first_name}
+              onChangeText={text => handleChangeText('first_name', text)}
+              style={styles.textInput}
+              placeholder="First Name"
+            />
+          </View>
+          <View style={styles.formControl}>
+            <FontAwesome name="user" size={22} color={DARK_COLOR} />
+            <TextInput
+              value={newUserInfo.last_name}
+              onChangeText={text => handleChangeText('last_name', text)}
+              style={styles.textInput}
+              placeholder="Last Name"
+            />
           </View>
           <View style={styles.formControl}>
             <FontAwesome name="envelope" size={18} color={DARK_COLOR} />
-            <TextInput style={styles.textInput} placeholder="Email" />
+            <TextInput
+              value={newUserInfo.email}
+              onChangeText={text => handleChangeText('email', text)}
+              style={styles.textInput}
+              placeholder="Email"
+            />
           </View>
           <View style={styles.formControl}>
             <FontAwesome name="lock" size={24} color={DARK_COLOR} />
-            <TextInput style={styles.textInput} placeholder="Password" />
+            <TextInput
+              secureTextEntry
+              value={newUserInfo.password}
+              onChangeText={text => handleChangeText('password', text)}
+              style={styles.textInput}
+              placeholder="Password"
+            />
           </View>
 
           <Pressable onPress={handleRegister} style={styles.button}>
@@ -49,7 +117,7 @@ const Register = ({navigation}) => {
           <View style={styles.noAccContainer}>
             <Text>Already have an account? </Text>
             <Pressable onPress={handleNavigateToRegister}>
-              <Text style={styles.registerBtnText}>Register</Text>
+              <Text style={styles.registerBtnText}>Login</Text>
             </Pressable>
           </View>
         </View>

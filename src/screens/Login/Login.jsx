@@ -47,7 +47,6 @@ const Login = ({navigation}) => {
 
         const userInfo = await getUserInfo(result.data.jwt).unwrap();
         if (userInfo.id) {
-          console.log(userInfo);
           await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
           dispatch(
             setUser({
@@ -63,8 +62,7 @@ const Login = ({navigation}) => {
   };
 
   const handleNavigateToRegister = () => {
-    // navigation.navigate('Register');
-    console.log(user);
+    navigation.navigate('Register');
   };
   return (
     <KeyboardAvoidingView

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUser} from '../features/user/userSlice';
 import AppStack from './AppStack';
@@ -39,7 +39,7 @@ const MainStack = () => {
 
   if (loadingUi) {
     return (
-      <View style={{flex: 1, justifyContent: 'center'}}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#000000" />
       </View>
     );
@@ -53,3 +53,10 @@ const MainStack = () => {
 };
 
 export default MainStack;
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+});

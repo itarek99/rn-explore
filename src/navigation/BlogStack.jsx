@@ -7,12 +7,13 @@ const Stack = createNativeStackNavigator();
 
 const BlogStack = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="Blog" component={Blog} />
-      <Stack.Screen name="BlogDetails" component={BlogDetails} />
+    <Stack.Navigator>
+      <Stack.Screen name="Blogs" component={Blog} />
+      <Stack.Screen
+        name="BlogDetails"
+        component={BlogDetails}
+        options={({route}) => ({title: route.params.item.title.rendered})}
+      />
     </Stack.Navigator>
   );
 };
