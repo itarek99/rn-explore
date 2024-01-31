@@ -13,12 +13,16 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
 import Cover from '../../assets/svg/register.svg';
 import {DARK_COLOR, PRIMARY_COLOR} from '../../constants/colors';
-import {useRegisterUserMutation} from '../../features/user/userApi';
+import {
+  useGetUserInfoMutation,
+  useRegisterUserMutation,
+} from '../../features/user/userApi';
 import {setUser} from '../../features/user/userSlice';
 
 const Register = ({navigation}) => {
   const dispatch = useDispatch();
   const [registerUser, {}] = useRegisterUserMutation();
+  const [getUserInfo, {}] = useGetUserInfoMutation();
   const [newUserInfo, setNewUserInfo] = useState({
     user_login: '',
     first_name: '',
@@ -32,17 +36,16 @@ const Register = ({navigation}) => {
   };
 
   const handleRegister = async () => {
-    console.log(newUserInfo);
-    return;
     try {
       const result = await registerUser(newUserInfo).unwrap();
       if (result.success) {
-        await AsyncStorage.setItem('userInfo', JSON.stringify(result.user));
+        const userInfo = await getUserInfo(result.jwt).unwrap();
+        await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
         await AsyncStorage.setItem('token', JSON.stringify(result.jwt));
         dispatch(
           setUser({
             token: result.jwt,
-            userInfo: result.user,
+            userInfo,
           }),
         );
       }
@@ -64,8 +67,9 @@ const Register = ({navigation}) => {
         </View>
         <View style={styles.loginFormContainer}>
           <View style={styles.formControl}>
-            <FontAwesome name="user" size={22} color={DARK_COLOR} />
+            <FontAwesome name="id-badge" size={24} color={DARK_COLOR} />
             <TextInput
+              autoCapitalize="none"
               value={newUserInfo.user_login}
               onChangeText={text => handleChangeText('user_login', text)}
               style={styles.textInput}
@@ -73,7 +77,7 @@ const Register = ({navigation}) => {
             />
           </View>
           <View style={styles.formControl}>
-            <FontAwesome name="user" size={22} color={DARK_COLOR} />
+            <FontAwesome name="user-o" size={22} color={DARK_COLOR} />
             <TextInput
               value={newUserInfo.first_name}
               onChangeText={text => handleChangeText('first_name', text)}
@@ -82,7 +86,7 @@ const Register = ({navigation}) => {
             />
           </View>
           <View style={styles.formControl}>
-            <FontAwesome name="user" size={22} color={DARK_COLOR} />
+            <FontAwesome name="user-o" size={22} color={DARK_COLOR} />
             <TextInput
               value={newUserInfo.last_name}
               onChangeText={text => handleChangeText('last_name', text)}
@@ -91,8 +95,11 @@ const Register = ({navigation}) => {
             />
           </View>
           <View style={styles.formControl}>
-            <FontAwesome name="envelope" size={18} color={DARK_COLOR} />
+            <FontAwesome name="envelope-o" size={20} color={DARK_COLOR} />
             <TextInput
+              autoCapitalize="none"
+              textContentType="emailAddress"
+              keyboardType="email-address"
               value={newUserInfo.email}
               onChangeText={text => handleChangeText('email', text)}
               style={styles.textInput}
@@ -100,7 +107,7 @@ const Register = ({navigation}) => {
             />
           </View>
           <View style={styles.formControl}>
-            <FontAwesome name="lock" size={24} color={DARK_COLOR} />
+            <FontAwesome name="asterisk" size={22} color={DARK_COLOR} />
             <TextInput
               secureTextEntry
               value={newUserInfo.password}

@@ -12,7 +12,10 @@ const BlogStack = () => {
       <Stack.Screen
         name="BlogDetails"
         component={BlogDetails}
-        options={({route}) => ({title: route.params.item.title.rendered})}
+        options={({route}) => ({
+          title: route.params.item.title.rendered,
+          headerBackTitleVisible: false,
+        })}
       />
     </Stack.Navigator>
   );

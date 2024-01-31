@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -14,7 +15,7 @@ import {
   View,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import Cover from '../../assets/svg/login.svg';
 import {DARK_COLOR, PRIMARY_COLOR} from '../../constants/colors';
 import {
@@ -24,8 +25,6 @@ import {
 import {setUser} from '../../features/user/userSlice';
 
 const Login = ({navigation}) => {
-  const user = useSelector(state => state.user);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [getToken, {isLoading}] = useGetTokenMutation();
@@ -38,19 +37,13 @@ const Login = ({navigation}) => {
       const result = await getToken({email, password}).unwrap();
       if (result.success) {
         await AsyncStorage.setItem('token', result.data.jwt);
-        dispatch(
-          setUser({
-            ...user,
-            token: result.jwt,
-          }),
-        );
 
         const userInfo = await getUserInfo(result.data.jwt).unwrap();
         if (userInfo.id) {
           await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
           dispatch(
             setUser({
-              ...user,
+              token: result.data.jwt,
               userInfo,
             }),
           );
@@ -64,6 +57,14 @@ const Login = ({navigation}) => {
   const handleNavigateToRegister = () => {
     navigation.navigate('Register');
   };
+
+  if (isLoading || isLoadingUserInfo) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#000000" />
+      </View>
+    );
+  }
   return (
     <KeyboardAvoidingView
       style={styles.mainContainer}
@@ -205,5 +206,10 @@ const styles = StyleSheet.create({
   registerBtnText: {
     color: PRIMARY_COLOR,
     fontWeight: '500',
+  },
+
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
 });

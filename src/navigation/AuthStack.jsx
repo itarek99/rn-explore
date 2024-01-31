@@ -1,6 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {StyleSheet} from 'react-native';
 import Login from '../screens/Login/Login';
 import Register from '../screens/Register/Register';
 
@@ -19,5 +18,3 @@ const AuthStack = () => {
 };
 
 export default AuthStack;
-
-const styles = StyleSheet.create({});

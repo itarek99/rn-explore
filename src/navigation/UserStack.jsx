@@ -1,7 +1,6 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import UserEdit from '../../UserEdit';
+import UserEdit from '../screens/UserEdit/UserEdit';
 import UserInfo from '../screens/UserInfo/UserInfo';
 
 const Stack = createNativeStackNavigator();
@@ -29,5 +28,3 @@ const UserStack = () => {
 };
 
 export default UserStack;
-
-const styles = StyleSheet.create({});

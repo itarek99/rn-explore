@@ -1,6 +1,7 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, useWindowDimensions} from 'react-native';
 import RenderHtml from 'react-native-render-html';
+import CommentArea from './components/CommentArea';
 
 const BlogDetails = ({route}) => {
   const {item} = route.params;
@@ -20,18 +21,11 @@ const BlogDetails = ({route}) => {
 
     figure: {
       margin: 0,
-      height: 200,
       width: width - 20,
       overflow: 'hidden',
       padding: 0,
       justifyContent: 'center',
       alignItems: 'center',
-    },
-  };
-
-  const renderersProps = {
-    img: {
-      enableExperimentalPercentWidth: true,
     },
   };
 
@@ -42,8 +36,8 @@ const BlogDetails = ({route}) => {
         tagsStyles={tagStyles}
         contentWidth={width}
         source={{html: item.content.rendered}}
-        renderersProps={renderersProps}
       />
+      <CommentArea postId={item.id} />
     </ScrollView>
   );
 };

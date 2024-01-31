@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUser} from '../features/user/userSlice';
-import AppStack from './AppStack';
+import AppTabs from './AppTabs';
 import AuthStack from './AuthStack';
 
 const MainStack = () => {
@@ -47,7 +47,7 @@ const MainStack = () => {
 
   return (
     <NavigationContainer>
-      {userInfo ? <AppStack /> : <AuthStack />}
+      {userInfo ? <AppTabs /> : <AuthStack />}
     </NavigationContainer>
   );
 };
