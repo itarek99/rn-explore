@@ -18,7 +18,9 @@ const UserInfo = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        <Text style={styles.userName}>{userInfo.name}</Text>
+        <Text style={styles.userName}>
+          {userInfo.first_name} {userInfo.last_name}
+        </Text>
         <Text style={styles.email}>{userInfo.email}</Text>
       </View>
       <View style={styles.buttonContainer}>

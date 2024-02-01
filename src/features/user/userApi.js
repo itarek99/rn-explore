@@ -12,14 +12,15 @@ const userApi = apiSlice.injectEndpoints({
         body,
       }),
     }),
-    getUserInfo: builder.mutation({
-      query: token => ({
+    getOrUpdateUser: builder.mutation({
+      query: ({body = {}, token}) => ({
         url: 'wp-json/wp/v2/users/me',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
+        body,
       }),
     }),
     registerUser: builder.mutation({
@@ -34,6 +35,6 @@ const userApi = apiSlice.injectEndpoints({
 
 export const {
   useGetTokenMutation,
-  useGetUserInfoMutation,
+  useGetOrUpdateUserMutation,
   useRegisterUserMutation,
 } = userApi;

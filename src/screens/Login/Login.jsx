@@ -14,31 +14,51 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
 import Cover from '../../assets/svg/login.svg';
 import {DARK_COLOR, PRIMARY_COLOR} from '../../constants/colors';
 import {
+  useGetOrUpdateUserMutation,
   useGetTokenMutation,
-  useGetUserInfoMutation,
 } from '../../features/user/userApi';
 import {setUser} from '../../features/user/userSlice';
+import {isValidEmail} from '../../utils/emaliValidation';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [getToken, {isLoading}] = useGetTokenMutation();
   const [getUserInfo, {isLoading: isLoadingUserInfo}] =
-    useGetUserInfoMutation();
+    useGetOrUpdateUserMutation();
   const dispatch = useDispatch();
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      Snackbar.show({
+        text: 'Please fill all fields.',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#ef3b3b',
+      });
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      Snackbar.show({
+        text: 'Email is not valid.',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#ef3b3b',
+      });
+      return;
+    }
+
     try {
       const result = await getToken({email, password}).unwrap();
       if (result.success) {
         await AsyncStorage.setItem('token', result.data.jwt);
 
-        const userInfo = await getUserInfo(result.data.jwt).unwrap();
+        const userInfo = await getUserInfo({token: result.data.jwt}).unwrap();
         if (userInfo.id) {
           await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
           dispatch(
@@ -50,7 +70,11 @@ const Login = ({navigation}) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      Snackbar.show({
+        text: error.data.data.message,
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#ef3b3b',
+      });
     }
   };
 

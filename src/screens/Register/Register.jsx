@@ -9,20 +9,22 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import Snackbar from 'react-native-snackbar';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
 import Cover from '../../assets/svg/register.svg';
 import {DARK_COLOR, PRIMARY_COLOR} from '../../constants/colors';
 import {
-  useGetUserInfoMutation,
+  useGetOrUpdateUserMutation,
   useRegisterUserMutation,
 } from '../../features/user/userApi';
 import {setUser} from '../../features/user/userSlice';
+import {isValidEmail} from '../../utils/emaliValidation';
 
 const Register = ({navigation}) => {
   const dispatch = useDispatch();
   const [registerUser, {}] = useRegisterUserMutation();
-  const [getUserInfo, {}] = useGetUserInfoMutation();
+  const [getUserInfo, {}] = useGetOrUpdateUserMutation();
   const [newUserInfo, setNewUserInfo] = useState({
     user_login: '',
     first_name: '',
@@ -36,10 +38,34 @@ const Register = ({navigation}) => {
   };
 
   const handleRegister = async () => {
+    if (
+      !newUserInfo.user_login ||
+      !newUserInfo.first_name ||
+      !newUserInfo.last_name ||
+      !newUserInfo.email ||
+      !newUserInfo.password
+    ) {
+      Snackbar.show({
+        text: 'Please fill all fields.',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#ef3b3b',
+      });
+      return;
+    }
+
+    if (!isValidEmail(newUserInfo.email)) {
+      Snackbar.show({
+        text: 'Email is not valid.',
+        duration: Snackbar.LENGTH_LONG,
+        backgroundColor: '#ef3b3b',
+      });
+      return;
+    }
+
     try {
       const result = await registerUser(newUserInfo).unwrap();
       if (result.success) {
-        const userInfo = await getUserInfo(result.jwt).unwrap();
+        const userInfo = await getUserInfo({token: result.jwt}).unwrap();
         await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
         await AsyncStorage.setItem('token', JSON.stringify(result.jwt));
         dispatch(
