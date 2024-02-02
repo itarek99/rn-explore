@@ -4,6 +4,7 @@ import {
   ActivityIndicator,
   Keyboard,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   Pressable,
   SafeAreaView,
@@ -24,7 +25,7 @@ import {
   useGetTokenMutation,
 } from '../../features/user/userApi';
 import {setUser} from '../../features/user/userSlice';
-import {isValidEmail} from '../../utils/emaliValidation';
+import {isValidEmail} from '../../utils/emailValidation';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -82,13 +83,6 @@ const Login = ({navigation}) => {
     navigation.navigate('Register');
   };
 
-  if (isLoading || isLoadingUserInfo) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#000000" />
-      </View>
-    );
-  }
   return (
     <KeyboardAvoidingView
       style={styles.mainContainer}
@@ -143,6 +137,16 @@ const Login = ({navigation}) => {
           </SafeAreaView>
         </ScrollView>
       </TouchableWithoutFeedback>
+
+      <Modal
+        transparent
+        animationType="fade"
+        visible={isLoading || isLoadingUserInfo}
+        onRequestClose={() => {}}>
+        <View style={styles.modalContainer}>
+          <ActivityIndicator size="large" color="#000000" />
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 };
@@ -232,8 +236,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
 
-  loadingContainer: {
+  modalContainer: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
 });

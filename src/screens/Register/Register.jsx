@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
 import {
+  ActivityIndicator,
+  Modal,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -19,12 +21,13 @@ import {
   useRegisterUserMutation,
 } from '../../features/user/userApi';
 import {setUser} from '../../features/user/userSlice';
-import {isValidEmail} from '../../utils/emaliValidation';
+import {isValidEmail} from '../../utils/emailValidation';
 
 const Register = ({navigation}) => {
   const dispatch = useDispatch();
-  const [registerUser, {}] = useRegisterUserMutation();
-  const [getUserInfo, {}] = useGetOrUpdateUserMutation();
+  const [registerUser, {isLoading}] = useRegisterUserMutation();
+  const [getUserInfo, {isLoading: isUserInfoLoading}] =
+    useGetOrUpdateUserMutation();
   const [newUserInfo, setNewUserInfo] = useState({
     user_login: '',
     first_name: '',
@@ -155,6 +158,15 @@ const Register = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
+      <Modal
+        transparent
+        animationType="fade"
+        visible={isLoading || isUserInfoLoading}
+        onRequestClose={() => {}}>
+        <View style={styles.modalContainer}>
+          <ActivityIndicator size="large" color="#000000" />
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -238,5 +250,12 @@ const styles = StyleSheet.create({
   registerBtnText: {
     color: PRIMARY_COLOR,
     fontWeight: '500',
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
 });
