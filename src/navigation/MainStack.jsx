@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {NavigationContainer} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {ActivityIndicator, Modal, StyleSheet, View} from 'react-native';
+import {Modal, StyleSheet, View} from 'react-native';
 import Snackbar from 'react-native-snackbar';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUser} from '../features/user/userSlice';
@@ -46,18 +46,21 @@ const MainStack = () => {
 
   return (
     <View style={styles.container}>
-      <NavigationContainer>
-        {userInfo ? <AppTabs /> : <AuthStack />}
-      </NavigationContainer>
-      <Modal
-        transparent
-        animationType="fade"
-        visible={loadingUi}
-        onRequestClose={() => {}}>
-        <View style={styles.modalContainer}>
-          <ActivityIndicator size="large" color="#000000" />
-        </View>
-      </Modal>
+      {!loadingUi ? (
+        <NavigationContainer>
+          {userInfo ? <AppTabs /> : <AuthStack />}
+        </NavigationContainer>
+      ) : (
+        <Modal
+          transparent
+          animationType="fade"
+          visible={loadingUi}
+          onRequestClose={() => {}}>
+          {/* <View style={styles.modalContainer}>
+            <ActivityIndicator size="large" color="#000000" />
+          </View> */}
+        </Modal>
+      )}
     </View>
   );
 };
@@ -72,6 +75,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: '#ffffff',
   },
 });
